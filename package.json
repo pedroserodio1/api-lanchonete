@@ -1,0 +1,32 @@
+{
+  "name": "apilanchonete",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedroserodio1/api-lanchonete.git"
+  },
+  "keywords": [
+    "Api"
+  ],
+  "author": "Pedro Serôdio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pedroserodio1/api-lanchonete/issues"
+  },
+  "homepage": "https://github.com/pedroserodio1/api-lanchonete#readme",
+  "dependencies": {
+    "consign": "^0.1.6",
+    "express": "^4.17.1",
+    "mysql2": "^2.3.0",
+    "sequelize": "^6.6.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13",
+    "sequelize-cli": "^6.2.0"
+  }
+}

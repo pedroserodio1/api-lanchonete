@@ -7,5 +7,5 @@ routes(app, express);
 
 
 app.listen(3000, () => {
-    console.log("Servidor on");
+    console.log("Servidor on no link localhost:3000/");
 });

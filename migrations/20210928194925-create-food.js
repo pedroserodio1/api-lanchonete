@@ -9,22 +9,21 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       value: {
-        allowNull: false,
         type: Sequelize.FLOAT
       },
-      ingrediets: {
-        allowNull: false,
+      ingredients: {
         type: Sequelize.STRING
       },
       avaliable: {
-        allowNull: false,
         type: Sequelize.BOOLEAN
       },
       image: {
+        type: Sequelize.STRING
+      },
+      type: {
         type: Sequelize.STRING
       },
       createdAt: {

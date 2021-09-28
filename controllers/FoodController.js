@@ -1,6 +1,11 @@
 const db = require('../models');
+const { Op } = require('sequelize');
 
 class FoodController{
+
+    static async defaultRoute(req, res){
+        res.status(200).json({Nome: "Api Lanchonete", Autor: "Pedro Serôdio", Descrição: "Api desenvolvida para meios de aprendizado", Repositorio: "https://github.com/pedroserodio1/api-lanchonete.git", "Redes Sociais":{Twitter: "twitter.com/pedroserodio", Facebook: "facebook.com/pedrohenrique.serodio30", Instagram: "instagram.com/pedroserodio", Discord: "serodinho#7052", Linkedin: "linkedin.com/in/pedroserodio1"}});
+    }
 
     static async listFoods(req, res){
 
@@ -17,8 +22,10 @@ class FoodController{
         const data = req.body;
 
         try{
+
             const createdFood = await db.Food.create(data);
             return res.status(201).json(createdFood);   
+
         }catch(error){
             res.status(500).json(error.message);
         }
@@ -28,6 +35,7 @@ class FoodController{
         const { id } = req.params;
 
         try{
+
             await db.Food.destroy({
                 where:{
                     id: Number(id)
@@ -45,6 +53,7 @@ class FoodController{
         const newData = req.body;
 
         try{
+
             await db.Food.update(newData, {
                 where:{
                     id: Number(id)
@@ -64,22 +73,132 @@ class FoodController{
 
     }
 
-    static async searchFood(req, res){
+    static async searchFoodByName(req, res){
         const { name } = req.params;
 
         try{
-            const food = await db.Food.findOne({
+            
+            const foods = await db.Food.findAll({
                 where:{
                     name: name
                 }
             });
 
-            res.status(200).json({Valor: food.value, Sabor: food.ingrediets, Disponivel: food.avaliable ? "Sim" : "Nao"});
+            foods.forEach((food) => {
+                res.status(200).json({Nome: food.name, Igredientes: food.ingredients, Valor: food.value, Tipo: food.type, Tem: food.avaliable ? "Sim":"Nao"})
+            });
+
+            
 
         }catch(error){
             res.status(500).json(error.message);
         }
     }
+
+    static async searchFoodByType(req, res){
+        const { type } = req.params;
+        let AllFood = [];
+        let i = 0;
+
+        try{
+            
+            const foods = await db.Food.findAll({
+                where:{
+                    type: type
+                }
+            });
+
+            foods.forEach((food) => {
+                AllFood[i] = {
+                    Nome: food.name, 
+                    Igredientes: food.ingredients, 
+                    Valor: food.value, 
+                    Tipo: food.type, 
+                    Tem: food.avaliable ? "Sim":"Nao"
+                } 
+                i++;
+            }); 
+
+
+             res.status(200).json(AllFood);
+
+        }catch(error){
+            res.status(500).json(error.message);
+        }
+    }
+
+    static async priceFilter(req, res){
+        const { BiggerOrSmaller, price} = req.params;
+        let AllFood = [];
+        let i = 0;
+
+        
+        try{
+
+            if(BiggerOrSmaller.toLowerCase() == "menor"){
+                const foods = await db.Food.findAll({
+                    where:{
+                      value:{
+                          [Op.lte] : price
+                      }
+                    }
+                });
+
+                if(foods.length == 0){
+                    return res.status(400).json({Status: `Não foi encontrado nenhum produto ${BiggerOrSmaller} que ${price}`})
+                }
+
+                foods.forEach((food) => {
+                    AllFood[i] = {
+                        Nome: food.name, 
+                        Igredientes: food.ingredients,  
+                        Valor: food.value, 
+                        Tipo: food.type, 
+                        Tem: food.avaliable ? "Sim":"Nao"
+                    } 
+                    i++;
+                }); 
+
+            }else{
+                if(BiggerOrSmaller.toLowerCase() == "maior"){
+                    const foods = await db.Food.findAll({
+                        where:{
+                          value:{
+                              [Op.gte] : price
+                          }
+                        }
+                    });
+
+                    if(foods.length == 0){
+                        return res.status(400).json({Status: `Não foi encontrado nenhum produto ${BiggerOrSmaller} que ${price}`})
+                    }
+    
+                    foods.forEach((food) => {
+                        AllFood[i] = {
+                            Nome: food.name, 
+                            Igredientes: food.ingredients, 
+                            Valor: food.value, 
+                            Tipo: food.type, 
+                            Tem: food.avaliable ? "Sim":"Nao"
+                        } 
+                        i++;
+                    }); 
+                }else{
+                    res.status(400).json({status: `O parametro ${BiggerOrSmaller} é invalido`, "Paremetro Valido": "Maior ou Menor"});
+                }
+            }
+            
+
+            
+            
+             res.status(200).json(AllFood);
+
+        }catch(error){
+            res.status(500).json(error.message);
+        }
+        
+    }
+
 }
 
 module.exports = FoodController;

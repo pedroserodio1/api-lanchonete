@@ -7,27 +7,30 @@ module.exports = {
         {
           name: 'Coxinha',
           value: 3.50,
-          ingrediets: "Frango e catupiry",
+          ingredients: "Frango e catupiry",
           avaliable: true,
           image: "..path",
+          type: "Salgado",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          name: 'Pastel',
-          value: 1,
-          ingrediets: "Carne moida",
+          name: 'Refrigerante',
+          value: 3.50,
+          ingredients: "Coca-cola",
           avaliable: true,
           image: "..path",
+          type: "Bebida",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          name: 'Esfirra',
+          name: 'Pé-de-moleque',
           value: 2.50,
-          ingrediets: "Calabresa",
+          ingredients: "Amendoim",
           avaliable: false,
           image: "..path",
+          type: "Doce",
           createdAt: new Date(),
           updatedAt: new Date()
         }
